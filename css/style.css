@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: auto;
   width: 90%;
@@ -18,7 +22,7 @@ body {
   justify-content: space-between;
 }
 
-.buttons button {
+.button {
   font-weight: 600;
   border: none;
   background: blue;
@@ -27,14 +31,23 @@ body {
   color: white;
   cursor: pointer;
   transition: 200ms;
+  outline: none;
 }
 
-.buttons button:hover {
+.button:hover {
   transform: scale(1.1);
   box-shadow: 3px 3px 5px 1px gray;
 }
 
 .user-list {
   align-self: flex-start;
+  width: 100%;
+  list-style-type: circle;
+}
+
+.user-list__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 /*# sourceMappingURL=style.css.map */
