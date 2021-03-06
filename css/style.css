@@ -3,52 +3,121 @@
 }
 
 body {
-  margin: auto;
+  margin: 0;
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.container {
   width: 90%;
+  margin: auto;
+}
+
+.header {
+  background: #1f1f1f;
+  width: 100%;
+  color: white;
+  padding: 15px 0;
+  border-radius: 0 0 15px 15px;
+}
+
+.header-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.heroes-movie {
+  min-width: 200px;
+}
+
+.heroes {
+  padding: 20px 20px;
+}
+
+.heroes-card {
+  width: 320px;
+  height: 480px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  padding: 25px;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 5px 5px 5px 2px gray;
 }
 
-.header h1 {
-  text-align: center;
+.heroes-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 25px;
+  box-shadow: inset 5px 5px 10px 0 #ffffffc9;
 }
 
-.buttons {
-  width: 300px;
-  display: flex;
-  justify-content: space-between;
+.heroes-card * {
+  position: relative;
 }
 
-.button {
-  font-weight: 600;
-  border: none;
-  background: blue;
-  padding: 15px;
-  border-radius: 15px;
-  color: white;
-  cursor: pointer;
-  transition: 200ms;
-  outline: none;
-}
-
-.button:hover {
-  transform: scale(1.1);
-  box-shadow: 3px 3px 5px 1px gray;
-}
-
-.user-list {
-  align-self: flex-start;
+.heroes-bckg {
+  position: absolute;
   width: 100%;
-  list-style-type: circle;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
-.user-list__item {
+.heroes-name {
+  width: 90%;
+  height: 50px;
+  background: url("../image/title-bckg.png");
+  background-repeat: no-repeat;
+  background-position: center;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  color: #ffee00;
+  -webkit-text-stroke: 1px #111111b0;
+}
+
+.heroes-propertie {
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  margin: 5px 0px;
+}
+
+.heroes-propertie span:first-child {
+  color: #ffee00;
+}
+
+.heroes-propertie span:last-child {
+  color: #ffffff;
+}
+
+.heroes-propertie-block {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: #1111115b;
+  -webkit-text-stroke: 1px #111111b0;
 }
 /*# sourceMappingURL=style.css.map */
