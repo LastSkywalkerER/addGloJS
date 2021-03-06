@@ -139,7 +139,11 @@ class FilterCards {
         this.selectedKeys = this.selectedKeys.filter(item => item !== event.target.value);
         this.reDrowWithFilter(this.selectedKeys, 'movies');
       }
+    });
 
+    this.cardsWrapper.addEventListener('click', event => {
+      const name = event.target.querySelector('.heroes-name').textContent;
+      window.location.href = `https://yandex.by/search/?lr=157&oprnd=6064670731&text=${name} marvel`;
     });
   }
 }
