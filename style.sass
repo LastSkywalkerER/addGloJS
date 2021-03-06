@@ -2,9 +2,28 @@
   box-sizing: border-box
 
 body
-  background: #8f8f8f
   margin: 0
   font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
+
+.background
+  position: fixed
+  z-index: 0
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  min-height: 100vh
+  width: 100vw
+  object-fit: cover
+  &::after
+    z-index: 0
+    content: ''
+    z-index:
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: #11111175
 
 .container
   width: 90%
@@ -14,18 +33,38 @@ body
   display: grid
   grid-template-columns: 320px 1fr
 
-.header
-  background: #1f1f1f
-  width: 100%
-  height: min-content
+.sidebar
+  position: fixed
+  z-index: 1
+  top: 50px
+  left: 25px
+  bottom: 50px
+  background: #181818bd
+  width: 320px
+  max-height: min-content
   color: white
-  padding: 15px 0
-  border-radius: 0 15px 15px 0
+
+  border-radius: 15px
+  box-shadow: inset -5px -5px 10px 2px #00000054
+  overflow-y: auto
+  & *
+    position: relative
+    z-index: 2
+  &::after
+    content: ''
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    border-radius: 15px
+    box-shadow: inset 5px 5px 10px 0 #ffffff1e
   &-wrapper
     display: flex
     flex-direction: column
     align-items: center
     justify-content: center
+    padding: 15px 0
   &-title
     font-weight: 600
     font-size: 20px
@@ -35,14 +74,18 @@ body
   min-width: 200px
 
 .heroes
-  padding: 20px 20px
+  padding: 30px 20px
+  grid-column-start: 2
+  z-index: 1
   &-wrapper
+    margin: auto
     display: grid
     grid-template-columns: repeat(auto-fit, 320px)
-    column-gap: 30px
-    row-gap: 30px
+    column-gap: 35px
+    row-gap: 35px
 
   &-card
+    z-index: 2
     width: 320px
     min-height: 480px
     position: relative
@@ -53,20 +96,30 @@ body
     padding: 15px
     border-radius: 25px
     overflow: hidden
-    box-shadow: 5px 5px 5px 2px #616161
-    &::after
+    box-shadow: 5px 5px 5px 2px #000000b9
+    transition: 200ms
+    cursor: pointer
+    &:hover
+      transform: scale(1.1)
+    &::after, &::before
       content: ''
       position: absolute
+      z-index: 2
       top: 0
       right: 0
       bottom: 0
       left: 0
       border-radius: 25px
-      box-shadow: inset 5px 5px 10px 0 #ffffffc9
+    &::after
+      box-shadow: inset 5px 5px 10px 0 #ffffff65
+    &::before
+      box-shadow: inset -5px -5px 5px 2px #000000b9
     & *
       position: relative
+      z-index: 3
   &-bckg
     position: absolute
+    z-index: 1
     width: 100%
     height: 100%
     object-fit: cover
@@ -74,6 +127,7 @@ body
     right: 0
     bottom: 0
     left: 0
+
   &-name
     width: 90%
     height: 50px

@@ -62,10 +62,10 @@ class FilterCards {
                 <input
                   type="checkbox"
                   class="checkbox"
-                  id="checkbox"
+                  id="${item}"
                   value="${item}"
                 />
-                <label for="checkbox">${item}</label>
+                <label for="${item}">${item}</label>
                 `;
       this.select.append(box);
     });
