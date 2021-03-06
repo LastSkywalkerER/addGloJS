@@ -5,10 +5,12 @@ class FilterCards {
     this.select = document.querySelector('.heroes-movie');
     this.cardsWrapper = document.querySelector('.heroes-wrapper');
     this.selectedKeys = [];
+    this.urlDataBase = './dbHeroes.json';
+    this.searchKey = 'movies';
 
-    this.getData('./dbHeroes.json', data => {
+    this.getData(this.urlDataBase, data => {
       this.renderCards(data);
-      this.renderCheckbox(this.getValues(data, 'movies'))
+      this.renderCheckbox(this.getValues(data, this.searchKey))
     });
 
     this.listeners();
@@ -53,9 +55,9 @@ class FilterCards {
   }
 
 
-  renderCheckbox(textArr) {
+  renderCheckbox(checkNames) {
     this.select.textContent = '';
-    textArr.forEach(item => {
+    checkNames.forEach(item => {
       const box = document.createElement('div');
       box.classList.add('heroes-checkbox');
       box.innerHTML = `
@@ -104,7 +106,7 @@ class FilterCards {
   }
 
   reDrowWithFilter(filter, key) {
-    this.getData('./dbHeroes.json', data => {
+    this.getData(this.urlDataBase, data => {
       const filteredData = data.filter(obj => {
 
         if (obj[key]) {
@@ -133,11 +135,11 @@ class FilterCards {
     this.select.addEventListener('change', event => {
       if (event.target.checked) {
         this.selectedKeys.push(event.target.value);
-        this.reDrowWithFilter(this.selectedKeys, 'movies');
+        this.reDrowWithFilter(this.selectedKeys, this.searchKey);
       } else {
 
         this.selectedKeys = this.selectedKeys.filter(item => item !== event.target.value);
-        this.reDrowWithFilter(this.selectedKeys, 'movies');
+        this.reDrowWithFilter(this.selectedKeys, this.searchKey);
       }
     });
 
