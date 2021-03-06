@@ -2,24 +2,99 @@
 
 class FilterCards {
   constructor() {
-    this.select = document.querySelector('#heroes-movie');
+    this.select = document.querySelector('.heroes-movie');
     this.cardsWrapper = document.querySelector('.heroes-wrapper');
+    this.selectedKeys = [];
 
     this.getData('./dbHeroes.json', data => {
       this.renderCards(data);
-      this.getValues(data, 'movies');
+      this.renderCheckbox(this.getValues(data, 'movies'))
     });
+
+    this.listeners();
+  }
+
+  reDrowWithFilter(filter, key) {
+    this.getData('./dbHeroes.json', data => {
+      const filteredData = data.filter(obj => {
+
+        if (obj[key]) {
+          return filter.every(item => {
+            return obj[key].includes(item);
+          });
+        }
+        return false;
+      });
+
+      if (filteredData.length) {
+        this.renderCards(filteredData);
+        console.log(filteredData);
+      } else {
+        const emptyObj = [{
+          name: 'UNIVERSAL',
+          movies: 'not found heroes with this movies',
+          photo: 'dbImage/Universal.jpg'
+        }];
+        this.renderCards(emptyObj);
+
+      }
+    });
+  }
+
+  listeners() {
+    this.select.addEventListener('change', event => {
+      if (event.target.checked) {
+        this.selectedKeys.push(event.target.value);
+        this.reDrowWithFilter(this.selectedKeys, 'movies');
+      } else {
+
+        this.selectedKeys = this.selectedKeys.filter(item => item !== event.target.value);
+        this.reDrowWithFilter(this.selectedKeys, 'movies');
+      }
+
+    });
+  }
+
+  renderCheckbox(textArr) {
+    this.select.textContent = '';
+
+    textArr.forEach(item => {
+      const box = document.createElement('div');
+      box.classList.add('heroes-checkbox');
+      box.innerHTML = `
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  id="checkbox"
+                  value="${item}"
+                />
+                <label for="checkbox">${item}</label>
+`;
+
+      this.select.append(box);
+    });
+
+
   }
 
   getValues(heroes, key) {
     const values = new Set();
+    heroes.forEach(item => {
+      const arrOfHeroesWithKey = this.projection(key, item);
+      if (arrOfHeroesWithKey[key]) {
+        arrOfHeroesWithKey[key].forEach(item => values.add(item));
+      }
 
-    heroes.forEach(item => item[key].forEach(item => {}));
-    console.log(values);
+    });
+
+    return values;
   }
 
-  filterHeroes(heroes, key, value) {
-    return heroes.filter(item => [...item[key]].includes(value));
+  projection(fields, obj) {
+    return Object.keys(obj).filter(field => fields.includes(field)).reduce((mewObj, key) => {
+      mewObj[key] = obj[key];
+      return mewObj;
+    }, {});
   }
 
   getData(url, cb) {

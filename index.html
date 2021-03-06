@@ -8,38 +8,48 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <header class="header">
-      <div class="container">
-        <div class="header-wrapper">
-          <span class="header-title">Выбрать город герев</span>
-          <select class="heroes-movie" name="heroes-movie" id="heroes-movie">
-            <option value="all">все</option>
-          </select>
-        </div>
-      </div>
-    </header>
-    <section class="heroes">
-      <div class="container">
-        <div class="heroes-wrapper">
-          <div class="heroes-card">
-            <img
-              src="dbimage/97d1d9f934a350cee765c5ac1a466605.jpg"
-              alt=""
-              class="heroes-bckg"
-            />
-            <span class="heroes-name">Танос</span>
-            <div class="heroes-propertie-block">
-              <p class="heroes-propertie">
-                <span>Зовут </span> <span>танос</span>
-              </p>
-              <p class="heroes-propertie">
-                <span>Любят </span> <span>50 на 50</span>
-              </p>
+    <div class="wrapper">
+      <header class="header">
+        <div class="container">
+          <div class="header-wrapper">
+            <span class="header-title">Выбрать фильмы герев</span>
+            <div class="heroes-movie">
+              <div class="heroes-checkbox">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  id="happy"
+                  value="happy"
+                />
+                <label for="happy">Happy</label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </header>
+      <section class="heroes">
+        <div class="container">
+          <div class="heroes-wrapper">
+            <div class="heroes-card">
+              <img
+                src="dbimage/97d1d9f934a350cee765c5ac1a466605.jpg"
+                alt=""
+                class="heroes-bckg"
+              />
+              <span class="heroes-name">Танос</span>
+              <div class="heroes-propertie-block">
+                <p class="heroes-propertie">
+                  <span>Зовут </span> <span>танос</span>
+                </p>
+                <p class="heroes-propertie">
+                  <span>Любят </span> <span>50 на 50</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
     <script src="js/main.js"></script>
   </body>
 </html>

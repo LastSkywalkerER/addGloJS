@@ -12,12 +12,18 @@ body {
   margin: auto;
 }
 
+.wrapper {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+}
+
 .header {
   background: #1f1f1f;
   width: 100%;
+  height: min-content;
   color: white;
   padding: 15px 0;
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 15px 15px 0;
 }
 
 .header-wrapper {
