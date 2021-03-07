@@ -1,6 +1,8 @@
 'use strict';
 
 class FilterCards {
+
+  // получение инфы по странице с картами и предварительная отрисовка из базы
   constructor() {
     this.select = document.querySelector('.heroes-movie');
     this.cardsWrapper = document.querySelector('.heroes-wrapper');
@@ -16,6 +18,7 @@ class FilterCards {
     this.listeners();
   }
 
+  // запрос на получение карт
   getData(url, cb) {
     const request = new XMLHttpRequest();
 
@@ -34,6 +37,8 @@ class FilterCards {
     request.send();
   }
 
+
+  // получение всей информации из объектов по ключу без повторений
   getValues(heroes, key) {
     const values = new Set();
     heroes.forEach(item => {
@@ -47,6 +52,7 @@ class FilterCards {
     return values;
   }
 
+  // фильтрация информации из объектов по ключу
   projection(fields, obj) {
     return Object.keys(obj).filter(field => fields.includes(field)).reduce((mewObj, key) => {
       mewObj[key] = obj[key];
@@ -54,7 +60,7 @@ class FilterCards {
     }, {});
   }
 
-
+  // отрисовка чекбоксов для фильтрации по имеющимуся набору информации
   renderCheckbox(checkNames) {
     this.select.textContent = '';
     checkNames.forEach(item => {
@@ -73,6 +79,7 @@ class FilterCards {
     });
   }
 
+  // отрисовка переданных карт
   renderCards(cards) {
     this.cardsWrapper.textContent = '';
 
@@ -105,6 +112,7 @@ class FilterCards {
     });
   }
 
+  // перерисовка карт по фильтру и ключу
   reDrowWithFilter(filter, key) {
     this.getData(this.urlDataBase, data => {
       const filteredData = data.filter(obj => {
@@ -131,6 +139,7 @@ class FilterCards {
     });
   }
 
+  // добавление прослушки на чекбоксы и карты
   listeners() {
     this.select.addEventListener('change', event => {
       if (event.target.checked) {
