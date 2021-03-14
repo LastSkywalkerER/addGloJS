@@ -6,16 +6,34 @@ class FilterCards {
   constructor() {
     this.select = document.querySelector('.heroes-movie');
     this.cardsWrapper = document.querySelector('.heroes-wrapper');
-    this.selectedKeys = [];
     this.urlDataBase = './dbHeroes.json';
-    this.searchKey = 'movies';
+    this.selectField = document.querySelector('#searchKey');
+    this.cardSelector = '.heroes-card';
+    this.nameCardSelector = '.heroes-name';
+
+    this.init();
+    this.listeners();
+  }
+
+  // очищаем ключ и получаем все карты и свойства
+  init() {
+    this.searchKey = '';
 
     this.getData(this.urlDataBase, data => {
       this.renderCards(data);
-      this.renderCheckbox(this.getValues(data, this.searchKey))
+      this.renderCheckbox(this.getValues(data, this.searchKey));
+      this.renderSelect(this.getOptions(data));
     });
+  }
 
-    this.listeners();
+  // очищаем фильтр и получаем все карты
+  update() {
+    this.selectedKeys = [];
+
+    this.getData(this.urlDataBase, data => {
+      this.renderCards(data);
+      this.renderCheckbox(this.getValues(data, this.searchKey));
+    });
   }
 
   // запрос на получение карт
@@ -37,16 +55,33 @@ class FilterCards {
     request.send();
   }
 
+  // полчаем все ключи карт без повторений
+  getOptions(heroes) {
+    const values = new Set();
+
+    heroes.forEach(hero => Object.keys(hero).forEach(option => {
+      if (option !== 'photo') {
+        values.add(option);
+      }
+    }));
+
+    return values;
+  }
 
   // получение всей информации из объектов по ключу без повторений
   getValues(heroes, key) {
     const values = new Set();
     heroes.forEach(item => {
-      const arrOfHeroesWithKey = this.projection(key, item);
-      if (arrOfHeroesWithKey[key]) {
-        arrOfHeroesWithKey[key].forEach(item => values.add(item));
+      const arrOfHeroesWithKey = this.projection(key, item)[key];
+      if (typeof arrOfHeroesWithKey !== 'string') {
+        if (arrOfHeroesWithKey) {
+          arrOfHeroesWithKey.forEach(item => values.add(item));
+        }
+      } else {
+        if (arrOfHeroesWithKey) {
+          values.add(arrOfHeroesWithKey);
+        }
       }
-
     });
 
     return values;
@@ -58,6 +93,16 @@ class FilterCards {
       mewObj[key] = obj[key];
       return mewObj;
     }, {});
+  }
+
+  // выводим все свойства карт в селект
+  renderSelect(options) {
+    options.forEach(item => {
+      const box = document.createElement('option');
+      box.value = item;
+      box.textContent = item;
+      this.selectField.append(box);
+    });
   }
 
   // отрисовка чекбоксов для фильтрации по имеющимуся набору информации
@@ -130,7 +175,7 @@ class FilterCards {
       } else {
         const emptyObj = [{
           name: 'UNIVERSAL',
-          movies: 'not found heroes with this movies',
+          option: 'not found heroes with this options',
           photo: 'dbImage/Universal.jpg'
         }];
         this.renderCards(emptyObj);
@@ -141,6 +186,11 @@ class FilterCards {
 
   // добавление прослушки на чекбоксы и карты
   listeners() {
+    this.selectField.addEventListener('change', () => {
+      this.searchKey = this.selectField.value;
+      this.update();
+    })
+
     this.select.addEventListener('change', event => {
       if (event.target.checked) {
         this.selectedKeys.push(event.target.value);
@@ -153,8 +203,11 @@ class FilterCards {
     });
 
     this.cardsWrapper.addEventListener('click', event => {
-      const name = event.target.querySelector('.heroes-name').textContent;
-      window.location.href = `https://yandex.by/search/?lr=157&oprnd=6064670731&text=${name} marvel`;
+      const card = event.target.closest(this.cardSelector);
+      if (card) {
+        const name = card.querySelector(this.nameCardSelector).textContent;
+        window.location.href = `https://yandex.by/search/?lr=157&oprnd=6064670731&text=${name} marvel`;
+      }
     });
   }
 }

@@ -1,5 +1,6 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 body {
@@ -12,10 +13,12 @@ body {
   z-index: 0;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   min-height: 100vh;
   width: 100vw;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .background::after {
@@ -35,28 +38,33 @@ body {
 }
 
 .wrapper {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 320px 1fr;
+  -ms-grid-columns: 320px 1fr;
+      grid-template-columns: 320px 1fr;
 }
 
 .sidebar {
   position: fixed;
-  z-index: 1;
+  z-index: 5;
   top: 50px;
   left: 25px;
   bottom: 50px;
   background: #181818bd;
   width: 320px;
+  max-height: -webkit-min-content;
+  max-height: -moz-min-content;
   max-height: min-content;
   color: white;
   border-radius: 15px;
-  box-shadow: inset -5px -5px 10px 2px #00000054;
+  -webkit-box-shadow: inset -5px -5px 10px 2px #00000054;
+          box-shadow: inset -5px -5px 10px 2px #00000054;
   overflow-y: auto;
 }
 
 .sidebar * {
   position: relative;
-  z-index: 2;
+  z-index: 6;
 }
 
 .sidebar::after {
@@ -67,14 +75,24 @@ body {
   bottom: 0;
   left: 0;
   border-radius: 15px;
-  box-shadow: inset 5px 5px 10px 0 #ffffff1e;
+  -webkit-box-shadow: inset 5px 5px 10px 0 #ffffff1e;
+          box-shadow: inset 5px 5px 10px 0 #ffffff1e;
 }
 
 .sidebar-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   padding: 15px 0;
 }
 
@@ -90,15 +108,19 @@ body {
 
 .heroes {
   padding: 30px 20px;
-  grid-column-start: 2;
+  -ms-grid-column: 2;
+      grid-column-start: 2;
   z-index: 1;
 }
 
 .heroes-wrapper {
   margin: auto;
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 320px);
-  column-gap: 35px;
+  -ms-grid-columns: (320px)[auto-fit];
+      grid-template-columns: repeat(auto-fit, 320px);
+  -webkit-column-gap: 35px;
+          column-gap: 35px;
   row-gap: 35px;
 }
 
@@ -107,20 +129,32 @@ body {
   width: 320px;
   min-height: 480px;
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   padding: 15px;
   border-radius: 25px;
   overflow: hidden;
-  box-shadow: 5px 5px 5px 2px #000000b9;
+  -webkit-box-shadow: 5px 5px 5px 2px #000000b9;
+          box-shadow: 5px 5px 5px 2px #000000b9;
+  -webkit-transition: 200ms;
   transition: 200ms;
   cursor: pointer;
 }
 
 .heroes-card:hover {
-  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .heroes-card::after, .heroes-card::before {
@@ -135,11 +169,13 @@ body {
 }
 
 .heroes-card::after {
-  box-shadow: inset 5px 5px 10px 0 #ffffff65;
+  -webkit-box-shadow: inset 5px 5px 10px 0 #ffffff65;
+          box-shadow: inset 5px 5px 10px 0 #ffffff65;
 }
 
 .heroes-card::before {
-  box-shadow: inset -5px -5px 5px 2px #000000b9;
+  -webkit-box-shadow: inset -5px -5px 5px 2px #000000b9;
+          box-shadow: inset -5px -5px 5px 2px #000000b9;
 }
 
 .heroes-card * {
@@ -152,7 +188,8 @@ body {
   z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   top: 0;
   right: 0;
   bottom: 0;
@@ -165,9 +202,15 @@ body {
   background: url("../image/title-bckg.png");
   background-repeat: no-repeat;
   background-position: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   font-size: 20px;
   font-weight: 700;
   font-style: italic;
@@ -192,8 +235,13 @@ body {
 
 .heroes-propertie-block {
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   padding: 5px;
   background: #1111118c;
   -webkit-text-stroke: 1px #111111b0;
