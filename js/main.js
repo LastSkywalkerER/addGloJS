@@ -17,7 +17,8 @@ class FilterCards {
 
   // очищаем ключ и получаем все карты и свойства
   init() {
-    this.searchKey = '';
+    this.searchKey = 'movies';
+    this.selectedKeys = [];
 
     this.getData(this.urlDataBase, data => {
       this.renderCards(data);
@@ -72,13 +73,18 @@ class FilterCards {
   getValues(heroes, key) {
     const values = new Set();
     heroes.forEach(item => {
-      const arrOfHeroesWithKey = this.projection(key, item)[key];
+      let arrOfHeroesWithKey = this.projection(key, item)[key];
       if (typeof arrOfHeroesWithKey !== 'string') {
         if (arrOfHeroesWithKey) {
-          arrOfHeroesWithKey.forEach(item => values.add(item));
+          arrOfHeroesWithKey.forEach(item => {
+            values.add(item);
+          });
         }
       } else {
         if (arrOfHeroesWithKey) {
+          if (arrOfHeroesWithKey.split(' ').length === 1) {
+            arrOfHeroesWithKey = arrOfHeroesWithKey.slice(0, 1).toUpperCase() + arrOfHeroesWithKey.slice(1).toLowerCase();
+          }
           values.add(arrOfHeroesWithKey);
         }
       }
@@ -144,6 +150,10 @@ class FilterCards {
       const cardDataBlock = card.querySelector('.heroes-propertie-block');
 
       for (let key in cardData) {
+        if (typeof cardData[key] === 'string' && cardData[key].split(' ').length === 1) {
+          cardData[key] = cardData[key].slice(0, 1).toUpperCase() + cardData[key].slice(1).toLowerCase();
+        }
+
         if (key !== 'name' && key !== 'photo') {
           const p = document.createElement('p');
           p.classList.add('heroes-propertie');
@@ -161,10 +171,10 @@ class FilterCards {
   reDrowWithFilter(filter, key) {
     this.getData(this.urlDataBase, data => {
       const filteredData = data.filter(obj => {
-
         if (obj[key]) {
           return filter.every(item => {
-            return obj[key].includes(item);
+            let reg = new RegExp(`(,|\\b)${item}(,|\\b)`, `gi`);
+            return reg.test(obj[key]);
           });
         }
         return false;
