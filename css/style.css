@@ -246,4 +246,88 @@ body {
   background: #1111118c;
   -webkit-text-stroke: 1px #111111b0;
 }
+
+.modal {
+  height: 80%;
+  padding: 25px;
+  background: #3e94a0d3;
+  max-height: -webkit-min-content;
+  max-height: -moz-min-content;
+  max-height: min-content;
+  color: #4FD666;
+  font-size: 30px;
+  border-radius: 15px;
+  -webkit-box-shadow: inset -5px -5px 10px 2px #00000054;
+          box-shadow: inset -5px -5px 10px 2px #00000054;
+  overflow-y: auto;
+  display: -ms-grid;
+  display: grid;
+  row-gap: 25px;
+  justify-items: center;
+}
+
+.modal-wrapper {
+  background: #111111c5;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: none;
+}
+
+.file-button {
+  width: 180px;
+  height: 50px;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  font: 14px/50px Tahoma;
+  -webkit-transition: all 0.18s ease-in-out;
+  transition: all 0.18s ease-in-out;
+  border: 1px solid #4FD666;
+  background: -webkit-gradient(linear, left bottom, right top, from(#3EC97A), color-stop(20%, #69EA49), color-stop(80%, rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0))) top right/500% 500%;
+  background: linear-gradient(to top right, #3EC97A, #69EA49 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0)) top right/500% 500%;
+  color: black;
+}
+
+.file-button:hover {
+  color: white;
+  background-position: bottom left;
+}
+
+.input-photo {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+input[type=text] {
+  height: 40px;
+  background: transparent;
+  padding-left: 20px;
+  border: 1px solid #4FD666;
+}
+
+input[type=text]:focus {
+  background: white;
+}
+
+.input-name {
+  width: 100%;
+}
 /*# sourceMappingURL=style.css.map */
