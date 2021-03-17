@@ -240,7 +240,77 @@ const filterCards = new FilterCards({
 
 class AddCards {
   constructor() {
+    this.addButton = document.querySelector('.add-card');
+    this.modal = document.querySelector('.modal-wrapper');
+    this.modalForm = this.modal.querySelector('form');
+    this.submitButton = this.modal.querySelector('button');
+    this.inputName = document.querySelector('#input-name');
+    this.inputOption = [...document.querySelectorAll('#input-option')];
+    this.inputValue = [...document.querySelectorAll('#input-value')];
+    this.addFieldsButton = document.querySelector('#add-fields');
+    this.addPhoto = document.querySelector('#input-photo');
 
+    this.init();
+    this.listeners();
+  }
+
+  init() {
+    this.modalForm.setAttribute('novalidate', '');
+    this.submitButton.setAttribute('disabled', '');
+
+  }
+
+  listeners() {
+    this.addButton.addEventListener('click', () => {
+      this.modal.style.display = 'flex';
+    });
+
+    this.modal.addEventListener('click', event => {
+      if (!event.target.closest(this.modalForm.tagName)) {
+        this.modal.style.display = 'none';
+      }
+    });
+
+    this.addFieldsButton.addEventListener('click', () => {
+      const div = document.createElement('div');
+      div.classList.add('input-properties');
+      div.innerHTML = `
+      <input
+            type="text"
+            placeholder="option"
+            class="input-option"
+            id="input-option"
+            required
+          />
+          <input
+            type="text"
+            placeholder="value"
+            class="input-value"
+            id="input-value"
+            required
+          />
+      `;
+      this.addFieldsButton.insertAdjacentElement('beforebegin', div);
+
+      this.inputOption = [...document.querySelectorAll('#input-option')];
+    });
+
+    this.inputName.addEventListener('input', () => {
+      if (this.inputName.value && this.addPhoto.files[0]) {
+        this.submitButton.removeAttribute('disabled');
+      }
+    });
+
+    this.addPhoto.addEventListener('change', () => {
+      if (this.inputName.value && this.addPhoto.files[0]) {
+        this.submitButton.removeAttribute('disabled');
+      }
+    });
+
+    this.modalForm.addEventListener('submit', event => {
+      event.preventDefault();
+      this.modal.style.display = 'none';
+    });
   }
 }
 
