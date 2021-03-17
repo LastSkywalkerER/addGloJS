@@ -468,7 +468,6 @@ input[type=text]:focus {
 }
 
 .add-card {
-  display: none;
   color: white;
   margin-top: 20px;
   border: 1px solid #4fc2d6;

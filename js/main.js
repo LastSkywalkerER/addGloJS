@@ -45,22 +45,16 @@ class FilterCards {
   }
 
   // запрос на получение карт
-  getData(url, cb) {
-    const request = new XMLHttpRequest();
-
-    request.addEventListener('readystatechange', () => {
-      if (request.readyState !== 4) return;
-      if (request.status === 200) {
-        const response = JSON.parse(request.responseText);
-        cb(response);
-      } else {
-        new Error(request.statusText);
-      }
+  async getData(url, cb) {
+    const response = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer'
     });
-
-    request.open('GET', url);
-    // request.setRequestHeader('Content-Type', 'application/json');
-    request.send();
+    const data = await response.json();
+    cb(data);
   }
 
   // полчаем все ключи карт без повторений
@@ -110,6 +104,10 @@ class FilterCards {
 
   // выводим все свойства карт в селект
   renderSelect(options) {
+    this.selectField.textContent = '';
+    const box = document.createElement('option');
+    box.textContent = 'Категория';
+    this.selectField.append(box);
     options.forEach(item => {
       const box = document.createElement('option');
       box.value = item;
@@ -255,9 +253,42 @@ class AddCards {
   }
 
   init() {
+    this.tempData = [];
+
     this.modalForm.setAttribute('novalidate', '');
     this.submitButton.setAttribute('disabled', '');
+  }
 
+  sendJson(url, data, cb) {
+    return fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+  }
+
+  sendPhoto(url, photo, cb) {
+    return fetch('dbimage/tempImg.jpg', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        // 'Content-Type': 'application/json'
+        'Content-Type': `image/${photo.name.slice(photo.name.indexOf('.')+1)}`,
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *client
+      body: photo // body data type must match "Content-Type" header
+    });
   }
 
   listeners() {
@@ -275,23 +306,24 @@ class AddCards {
       const div = document.createElement('div');
       div.classList.add('input-properties');
       div.innerHTML = `
-      <input
-            type="text"
-            placeholder="option"
-            class="input-option"
-            id="input-option"
-            required
-          />
-          <input
-            type="text"
-            placeholder="value"
-            class="input-value"
-            id="input-value"
-            required
-          />
+        <input
+          type="text"
+          placeholder="option"
+          class="input-option"
+          id="input-option"
+          required
+        />
+        <input
+          type="text"
+          placeholder="value"
+          class="input-value"
+          id="input-value"
+          required
+        />
       `;
       this.addFieldsButton.insertAdjacentElement('beforebegin', div);
 
+      this.inputValue = [...document.querySelectorAll('#input-value')];
       this.inputOption = [...document.querySelectorAll('#input-option')];
     });
 
@@ -305,11 +337,35 @@ class AddCards {
       if (this.inputName.value && this.addPhoto.files[0]) {
         this.submitButton.removeAttribute('disabled');
       }
+
     });
 
     this.modalForm.addEventListener('submit', event => {
       event.preventDefault();
       this.modal.style.display = 'none';
+
+      const newCard = {
+        name: this.inputName.value,
+        photo: /.(ico|gif|jpg|jpeg|png)$/i.test(this.addPhoto.files[0].name) ? `dbimage/${this.addPhoto.files[0].name}` : 'dbImage/Universal.jpg',
+      };
+
+      this.inputOption.forEach((item, index) => {
+        if (item.value && this.inputValue[index].value) {
+          newCard[item.value] = this.inputValue[index].value;
+        }
+      });
+
+      this.tempData.push(newCard);
+
+      this.sendPhoto(`dbimage/${this.addPhoto.files[0].name}`, this.addPhoto.files[0]);
+
+      filterCards.getData(filterCards.urlDataBase, (data) => {
+        data.push(newCard);
+        this.sendJson(filterCards.urlDataBase, data);
+        // filterCards.init();
+        filterCards.renderCards(data);
+      });
+
     });
   }
 }
