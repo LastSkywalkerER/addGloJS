@@ -65,9 +65,7 @@ input:active, textarea:active {
   bottom: 50px;
   background: #181818bd;
   width: 320px;
-  max-height: -webkit-min-content;
-  max-height: -moz-min-content;
-  max-height: min-content;
+  max-height: 80%;
   color: white;
   border-radius: 15px;
   -webkit-box-shadow: inset -5px -5px 10px 2px #00000054;
