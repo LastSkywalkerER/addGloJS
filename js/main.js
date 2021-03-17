@@ -3,13 +3,20 @@
 class FilterCards {
 
   // получение инфы по странице с картами и предварительная отрисовка из базы
-  constructor() {
-    this.select = document.querySelector('.heroes-movie');
-    this.cardsWrapper = document.querySelector('.heroes-wrapper');
-    this.urlDataBase = './dbHeroes.json';
-    this.selectField = document.querySelector('#searchKey');
-    this.cardSelector = '.heroes-card';
-    this.nameCardSelector = '.heroes-name';
+  constructor({
+    checkBoxFieldSelector,
+    cardsWrapperSelector,
+    urlDatabase,
+    selectOptionSelector,
+    cardSelector,
+    nameCardSelector
+  }) {
+    this.select = document.querySelector(checkBoxFieldSelector);
+    this.cardsWrapper = document.querySelector(cardsWrapperSelector);
+    this.urlDataBase = urlDatabase;
+    this.selectField = document.querySelector(selectOptionSelector);
+    this.cardSelector = cardSelector;
+    this.nameCardSelector = nameCardSelector;
 
     this.init();
     this.listeners();
@@ -120,7 +127,7 @@ class FilterCards {
       box.innerHTML = `
                 <input
                   type="checkbox"
-                  class="checkbox"
+                  class="checkbox custom-checkbox"
                   id="${item}"
                   value="${item}"
                 />
@@ -222,4 +229,19 @@ class FilterCards {
   }
 }
 
-const filterCards = new FilterCards();
+const filterCards = new FilterCards({
+  checkBoxFieldSelector: '.heroes-movie',
+  cardsWrapperSelector: '.heroes-wrapper',
+  urlDatabase: './dbHeroes.json',
+  selectOptionSelector: '#searchKey',
+  cardSelector: '.heroes-card',
+  nameCardSelector: '.heroes-name'
+});
+
+class AddCards {
+  constructor() {
+
+  }
+}
+
+const addCards = new AddCards();

@@ -16,7 +16,7 @@
         <div class="container">
           <div class="sidebar-wrapper">
             <span class="sidebar-title">Выбрать категорию</span>
-            <select name="searchKey" id="searchKey">
+            <select name="searchKey" id="searchKey" class="select-css">
               <option>Категория</option>
             </select>
             <span class="sidebar-title">Выбрать подкатегорию</span>
@@ -31,6 +31,7 @@
                 <label for="happy">Happy</label>
               </div>
             </div>
+            <button class="add-card file-button">Добавить карточку</button>
           </div>
         </div>
       </aside>
@@ -72,14 +73,14 @@
             type="text"
             placeholder="option"
             class="input-option"
-            id="input-name"
+            id="input-option"
             required
           />
           <input
             type="text"
             placeholder="value"
-            class="input-option"
-            id="input-name"
+            class="input-value"
+            id="input-value"
             required
           />
         </div>
