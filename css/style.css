@@ -9,6 +9,10 @@ body {
   font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 }
 
+p {
+  margin: 0;
+}
+
 button:active, button:focus, button {
   outline: none;
 }
@@ -383,6 +387,7 @@ input:active, textarea:active {
 }
 
 .modal {
+  width: 480px;
   height: 80%;
   padding: 25px;
   background: white;

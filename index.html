@@ -59,8 +59,14 @@
       </section>
     </div>
     <div class="modal-wrapper">
-      <form class="modal">
+      <form
+        action="savedata.php"
+        method="POST"
+        class="modal"
+        enctype="multipart/form-data"
+      >
         <span>Создать карту</span>
+        <p>(демо версия, не получается записывать файлы на сервер)</p>
         <input
           type="text"
           placeholder="Name"
@@ -85,10 +91,9 @@
           />
         </div>
         <span class="file-button" id="add-fields">Добавить поля</span>
-        <label class="file-button" for="input-photo"
-          ><input class="input-photo" type="file" id="input-photo" required />
-          Выбрать фото
-        </label>
+        <label class="file-button" for="input-photo"> Выбрать фото </label
+        ><input name="photo" class="input-photo" type="file" id="input-photo" />
+
         <button type="submit" class="file-button">Создать</button>
       </form>
     </div>

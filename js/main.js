@@ -266,28 +266,31 @@ class AddCards {
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
-        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
+      body: JSON.stringify({
+        data
+      }) // body data type must match "Content-Type" header
     });
   }
 
   sendPhoto(url, photo, cb) {
-    return fetch('dbimage/tempImg.jpg', {
+
+    console.log(photo);
+
+    return fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': `image/${photo.name.slice(photo.name.indexOf('.')+1)}`,
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *client
-      body: photo // body data type must match "Content-Type" header
+      // headers: {
+      //   // 'Content-Type': 'application/json'
+      //   'Content-Type': 'multipart/form-data'
+      //   // 'Content-Type': `${photo.type}`,
+      // },
+      body: photo
+      // body data type must match "Content-Type" header
     });
   }
 
@@ -357,11 +360,11 @@ class AddCards {
 
       this.tempData.push(newCard);
 
-      this.sendPhoto(`dbimage/${this.addPhoto.files[0].name}`, this.addPhoto.files[0]);
+      this.sendPhoto(`savephoto.php`, this.addPhoto.files[0]);
 
       filterCards.getData(filterCards.urlDataBase, (data) => {
         data.push(newCard);
-        this.sendJson(filterCards.urlDataBase, data);
+        this.sendJson('savedata.php', data);
         // filterCards.init();
         filterCards.renderCards(data);
       });
