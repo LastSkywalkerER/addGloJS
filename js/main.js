@@ -260,36 +260,50 @@ class AddCards {
   }
 
   sendJson(url, data, cb) {
+
+    // return new Promise((outputData, errorData) => {
+    //   const request = new XMLHttpRequest();
+    //   request.addEventListener('readystatechange', () => {
+    //     if (request.readyState !== 4) {
+    //       return;
+    //     }
+    //     if (request.status === 200) {
+    //       outputData();
+    //     } else {
+    //       errorData(request.status);
+    //     }
+    //   });
+    //   request.open('POST', url);
+    //   request.setRequestHeader("Content-Type", 'application/json');
+    //   request.send(`jsonTxt=${JSON.stringify(data)}`);
+    // });
+
     return fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         // 'Content-Type': 'application/json'
-        'Content-Type': 'multipart/form-data'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded"
+        // 'Content-Type': 'multipart/form-data'
       },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify({
-        data
-      }) // body data type must match "Content-Type" header
+      body: `jsonTxt=${JSON.stringify(data)}`
+      // body data type must match "Content-Type" header
     });
   }
 
   sendPhoto(url, photo, cb) {
-
-    console.log(photo);
+    const data = new FormData();
+    data.append('photo', photo, photo.name);
+    console.log(data);
 
     return fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      // headers: {
-      //   // 'Content-Type': 'application/json'
-      //   'Content-Type': 'multipart/form-data'
-      //   // 'Content-Type': `${photo.type}`,
-      // },
-      body: photo
+      headers: {
+        // 'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
+        // 'Content-Type': `${photo.type}`,
+      },
+      body: data
       // body data type must match "Content-Type" header
     });
   }
@@ -360,11 +374,11 @@ class AddCards {
 
       this.tempData.push(newCard);
 
-      this.sendPhoto(`savephoto.php`, this.addPhoto.files[0]);
+      this.sendPhoto(`./savephoto.php`, this.addPhoto.files[0]);
 
       filterCards.getData(filterCards.urlDataBase, (data) => {
         data.push(newCard);
-        this.sendJson('savedata.php', data);
+        this.sendJson('./dbHeroes.json', data);
         // filterCards.init();
         filterCards.renderCards(data);
       });
