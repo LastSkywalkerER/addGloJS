@@ -230,7 +230,7 @@ class FilterCards {
       if (deletectn) {
         this.getData(this.urlDataBase, (data) => {
           data = data.filter(hero => hero.name !== name);
-          addCards.sendJson('./dbHeroes.json', data);
+          addCards.sendJson(data);
           this.init();
         });
 
@@ -365,7 +365,7 @@ class AddCards {
       // получаем добавляем и заливаем
       filterCards.getData(filterCards.urlDataBase, (data) => {
         data.push(newCard);
-        this.sendJson('./dbHeroes.json', data);
+        this.sendJson(data);
         filterCards.init();
       });
 
