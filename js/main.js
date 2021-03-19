@@ -46,15 +46,20 @@ class FilterCards {
 
   // запрос на получение карт
   async getData(url, cb) {
-    const response = await fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer'
-    });
-    const data = await response.json();
-    cb(data);
+    if (localStorage.getItem('data')) {
+      cb(JSON.parse(localStorage.getItem('data')));
+    } else {
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer'
+      });
+      const data = await response.json();
+      cb(data);
+      localStorage.setItem('data', JSON.stringify(data));
+    }
   }
 
   // полчаем все ключи карт без повторений
@@ -143,13 +148,13 @@ class FilterCards {
       const card = document.createElement('div');
       card.classList.add('heroes-card');
       card.innerHTML = `
-              <img src="${cardData.photo.replace(/\/$/, '')}"
-              alt=""
-              class="heroes-bckg"
+            <img src="${cardData.photo.replace(/\/$/, '')}"
+            alt=""
+            class="heroes-bckg"
             />
+            <button class="delete">X</button>
             <span class="heroes-name">${cardData.name}</span>
             <div class="heroes-propertie-block">
-              
             </div>
             `;
       const cardDataBlock = card.querySelector('.heroes-propertie-block');
@@ -218,9 +223,20 @@ class FilterCards {
     });
 
     this.cardsWrapper.addEventListener('click', event => {
-      const card = event.target.closest(this.cardSelector);
+      const card = event.target.closest(this.cardSelector),
+        deletectn = event.target.closest('.delete'),
+        name = card.querySelector(this.nameCardSelector).textContent;
+      if (deletectn) {
+        this.getData(this.urlDataBase, (data) => {
+          data = data.filter(hero => hero.name !== name);
+          addCards.sendJson('./dbHeroes.json', data);
+          this.init();
+        });
+
+        return;
+      }
       if (card) {
-        const name = card.querySelector(this.nameCardSelector).textContent;
+
         window.location.href = `https://yandex.by/search/?lr=157&oprnd=6064670731&text=${name} marvel`;
       }
     });
@@ -277,6 +293,8 @@ class AddCards {
     //   request.setRequestHeader("Content-Type", 'application/json');
     //   request.send(`jsonTxt=${JSON.stringify(data)}`);
     // });
+
+    localStorage.setItem('data', JSON.stringify(data));
 
     return fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -345,13 +363,13 @@ class AddCards {
     });
 
     this.inputName.addEventListener('input', () => {
-      if (this.inputName.value && this.addPhoto.files[0]) {
+      if (this.inputName.value && this.addPhoto.value) {
         this.submitButton.removeAttribute('disabled');
       }
     });
 
-    this.addPhoto.addEventListener('change', () => {
-      if (this.inputName.value && this.addPhoto.files[0]) {
+    this.addPhoto.addEventListener('input', () => {
+      if (this.inputName.value && this.addPhoto.value) {
         this.submitButton.removeAttribute('disabled');
       }
 
@@ -363,24 +381,29 @@ class AddCards {
 
       const newCard = {
         name: this.inputName.value,
-        photo: /.(ico|gif|jpg|jpeg|png)$/i.test(this.addPhoto.files[0].name) ? `dbimage/${this.addPhoto.files[0].name}` : 'dbImage/Universal.jpg',
+        photo: this.addPhoto.value,
       };
 
       this.inputOption.forEach((item, index) => {
         if (item.value && this.inputValue[index].value) {
-          newCard[item.value] = this.inputValue[index].value;
+          if (item.value === 'movies') {
+            newCard[item.value] = this.inputValue[index].value.split(/, ?/);
+          } else {
+            newCard[item.value] = this.inputValue[index].value;
+          }
         }
+
+
       });
 
-      this.tempData.push(newCard);
-
-      this.sendPhoto(`./savephoto.php`, this.addPhoto.files[0]);
+      [...this.modalForm.elements].forEach(item => item.value = '');
+      // this.sendPhoto(`./savephoto.php`, this.addPhoto.files[0]);
 
       filterCards.getData(filterCards.urlDataBase, (data) => {
         data.push(newCard);
         this.sendJson('./dbHeroes.json', data);
-        // filterCards.init();
-        filterCards.renderCards(data);
+        filterCards.init();
+        // filterCards.renderCards(data);
       });
 
     });
