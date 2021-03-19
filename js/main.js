@@ -1,5 +1,6 @@
 'use strict';
 
+// объек  для фильтрации и отрисовки карт
 class FilterCards {
 
   // получение инфы по странице с картами и предварительная отрисовка из базы
@@ -44,7 +45,7 @@ class FilterCards {
     });
   }
 
-  // запрос на получение карт
+  // запрос на получение карт с сервера или хранилища если есть
   async getData(url, cb) {
     if (localStorage.getItem('data')) {
       cb(JSON.parse(localStorage.getItem('data')));
@@ -252,6 +253,7 @@ const filterCards = new FilterCards({
   nameCardSelector: '.heroes-name'
 });
 
+// объект для добавления карт
 class AddCards {
   constructor() {
     this.addButton = document.querySelector('.add-card');
@@ -267,7 +269,7 @@ class AddCards {
     this.init();
     this.listeners();
   }
-
+  // запуск всех функции объекта
   init() {
     this.tempData = [];
 
@@ -275,68 +277,26 @@ class AddCards {
     this.submitButton.setAttribute('disabled', '');
   }
 
-  sendJson(url, data, cb) {
-
-    // return new Promise((outputData, errorData) => {
-    //   const request = new XMLHttpRequest();
-    //   request.addEventListener('readystatechange', () => {
-    //     if (request.readyState !== 4) {
-    //       return;
-    //     }
-    //     if (request.status === 200) {
-    //       outputData();
-    //     } else {
-    //       errorData(request.status);
-    //     }
-    //   });
-    //   request.open('POST', url);
-    //   request.setRequestHeader("Content-Type", 'application/json');
-    //   request.send(`jsonTxt=${JSON.stringify(data)}`);
-    // });
-
+  // здесь хотел записывать добавленные карты в json, но получилось только в LOCALstorage. А я там и php пробовал и node.js всё глухо(
+  sendJson(data) {
     localStorage.setItem('data', JSON.stringify(data));
-
-    return fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      headers: {
-        // 'Content-Type': 'application/json'
-        "Content-Type": "application/x-www-form-urlencoded"
-        // 'Content-Type': 'multipart/form-data'
-      },
-      body: `jsonTxt=${JSON.stringify(data)}`
-      // body data type must match "Content-Type" header
-    });
   }
 
-  sendPhoto(url, photo, cb) {
-    const data = new FormData();
-    data.append('photo', photo, photo.name);
-    console.log(data);
-
-    return fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'multipart/form-data'
-        // 'Content-Type': `${photo.type}`,
-      },
-      body: data
-      // body data type must match "Content-Type" header
-    });
-  }
-
+  // слушаем события на кнопках открывающих форму и самой форме
   listeners() {
+    // открываем модалку на кнопку
     this.addButton.addEventListener('click', () => {
       this.modal.style.display = 'flex';
     });
 
+    // закрываем модалку если нажали мимо
     this.modal.addEventListener('click', event => {
       if (!event.target.closest(this.modalForm.tagName)) {
         this.modal.style.display = 'none';
       }
     });
 
+    // добавляем поля ввода на кнопку
     this.addFieldsButton.addEventListener('click', () => {
       const div = document.createElement('div');
       div.classList.add('input-properties');
@@ -362,6 +322,7 @@ class AddCards {
       this.inputOption = [...document.querySelectorAll('#input-option')];
     });
 
+    // валидируем форму по введению имени и ссылки на фотку
     this.inputName.addEventListener('input', () => {
       if (this.inputName.value && this.addPhoto.value) {
         this.submitButton.removeAttribute('disabled');
@@ -375,6 +336,7 @@ class AddCards {
 
     });
 
+    // формируем объекьт с картой, чистим формум и отправляем в хранилище
     this.modalForm.addEventListener('submit', event => {
       event.preventDefault();
       this.modal.style.display = 'none';
@@ -384,6 +346,7 @@ class AddCards {
         photo: this.addPhoto.value,
       };
 
+      // перебиравем все опции
       this.inputOption.forEach((item, index) => {
         if (item.value && this.inputValue[index].value) {
           if (item.value === 'movies') {
@@ -396,14 +359,14 @@ class AddCards {
 
       });
 
+      // чистим форму
       [...this.modalForm.elements].forEach(item => item.value = '');
-      // this.sendPhoto(`./savephoto.php`, this.addPhoto.files[0]);
 
+      // получаем добавляем и заливаем
       filterCards.getData(filterCards.urlDataBase, (data) => {
         data.push(newCard);
         this.sendJson('./dbHeroes.json', data);
         filterCards.init();
-        // filterCards.renderCards(data);
       });
 
     });
