@@ -47,19 +47,22 @@ class FilterCards {
 
   // запрос на получение карт с сервера или хранилища если есть
   async getData(url, cb) {
+    const response = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer'
+    });
+    const text = await response.text(),
+      data = JSON.parse(text);
+
     if (localStorage.getItem('marvelCardsData')) {
       cb(JSON.parse(localStorage.getItem('marvelCardsData')));
-    } else {
-      const response = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer'
-      });
-      const data = await response.json();
+    }
+    if (!localStorage.getItem('marvelCardsData') || localStorage.getItem('marvelCardsData') !== text) {
       cb(data);
-      localStorage.setItem('marvelCardsData', JSON.stringify(data));
+      localStorage.setItem('marvelCardsData', text);
     }
   }
 
@@ -197,7 +200,7 @@ class FilterCards {
         const emptyObj = [{
           name: 'UNIVERSAL',
           option: 'not found heroes with this options',
-          photo: 'dbImage/Universal.jpg'
+          photo: 'dbimage/Universal.jpg'
         }];
         this.renderCards(emptyObj);
 
