@@ -47,8 +47,8 @@ class FilterCards {
 
   // запрос на получение карт с сервера или хранилища если есть
   async getData(url, cb) {
-    if (localStorage.getItem('data')) {
-      cb(JSON.parse(localStorage.getItem('data')));
+    if (localStorage.getItem('marvelCardsData')) {
+      cb(JSON.parse(localStorage.getItem('marvelCardsData')));
     } else {
       const response = await fetch(url, {
         method: 'GET',
@@ -59,7 +59,7 @@ class FilterCards {
       });
       const data = await response.json();
       cb(data);
-      localStorage.setItem('data', JSON.stringify(data));
+      localStorage.setItem('marvelCardsData', JSON.stringify(data));
     }
   }
 
@@ -279,7 +279,7 @@ class AddCards {
 
   // здесь хотел записывать добавленные карты в json, но получилось только в LOCALstorage. А я там и php пробовал и node.js всё глухо(
   sendJson(data) {
-    localStorage.setItem('data', JSON.stringify(data));
+    localStorage.setItem('marvelCardsData', JSON.stringify(data));
   }
 
   // слушаем события на кнопках открывающих форму и самой форме
