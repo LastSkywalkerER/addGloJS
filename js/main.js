@@ -60,7 +60,7 @@ class FilterCards {
     if (localStorage.getItem('marvelCardsData')) {
       cb(JSON.parse(localStorage.getItem('marvelCardsData')));
     }
-    if (!localStorage.getItem('marvelCardsData') || localStorage.getItem('marvelCardsData') !== text) {
+    if (!localStorage.getItem('marvelCardsData')) {
       cb(data);
       localStorage.setItem('marvelCardsData', text);
     }
